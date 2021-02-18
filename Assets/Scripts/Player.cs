@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Http;
 using System;
+using System.Text;
+// using System.Web.Script.Serialization;
+
 
 public class Player : NetworkBehaviour
 {
     private long time = 0;
     private static readonly HttpClient client = new HttpClient();
-    public bool boo;
 
     [SyncVar(hook = nameof(onHolaCountChange))]
     int holaCount = 0;
@@ -45,7 +47,7 @@ public class Player : NetworkBehaviour
         {
             return;
         }
-        print(time);
+        // print(time);
         sendPos();
         
     }
@@ -60,9 +62,20 @@ public class Player : NetworkBehaviour
         var rotx = transform.position.x.ToString();
         var roty = transform.position.y.ToString();
         var rotz = transform.position.z.ToString();
-
+        
+        var robot = new Robot();
+        robot.name = "gears";
+        robot.position = new Position();
+        robot.position.x = posx;
+        robot.position.y = posy;
+        robot.position.z = posz;
+        robot.position.rotx = rotx;
+        robot.position.roty = roty;
+        robot.position.rotz = rotz;
+    
         var values = new Dictionary<string, string>
         {
+            // {name: "gears"}
             { "posx", posx },
             { "posy", posy },
             { "posz", posz },
@@ -70,13 +83,22 @@ public class Player : NetworkBehaviour
             { "roty", roty },
             { "rotz", rotz }
         };
-        print(transform.position);
+        // print(transform.position);
         
-        var content = new FormUrlEncodedContent(values);
+        // var json = new JavaScriptSerializer().Serialize(robot);
+        string json = JsonUtility.ToJson(robot);
+        // print(json);
+        
+        // var content = new FormUrlEncodedContent(json);
 
-        var response = await client.PostAsync("http://localhost:7000/", content);
+        var response = await client.PostAsync("http://localhost:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
 
         var responseString = await response.Content.ReadAsStringAsync();
+        
+        var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+        print(positionResponseString);
     }
 
     async void Update()
@@ -129,4 +151,23 @@ public class Player : NetworkBehaviour
     {
         print($"Hola count was {oldHolaCount} but now we have {newHolaCount}");
     }
+}
+
+[Serializable]
+public class Position
+{
+    public string x;
+    public string y;
+    public string z;
+    public string rotx;
+    public string roty;
+    public string rotz;
+
+}
+
+[Serializable]
+public class Robot
+{
+    public string name;
+    public Position position;
 }
