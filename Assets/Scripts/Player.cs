@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     private long time = 0;
     private static readonly HttpClient client = new HttpClient();
 
+    public bool toggleSelected;
+
     
 
     void Start()
@@ -109,9 +111,19 @@ public class Player : MonoBehaviour
         print(positionResponseString);
     }
 
-    async void Update()
+    async void FixedUpdate()
     {
-        HandleMovement();
+        if (toggleSelected == true)
+        {
+            HandleMovement();  
+        }
+        
+        
+        
+    }
+
+    public void toggleSelectedState (){
+        toggleSelected = !toggleSelected;
     }
 
 }

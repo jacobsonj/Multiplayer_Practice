@@ -16,4 +16,9 @@ public class CamerFollow : MonoBehaviour
     {
         transform.position = player.transform.position + offset;
     }
+
+    public void togglePlayerFollow(GameObject character)
+    {
+        player = character;
+    }
 }
