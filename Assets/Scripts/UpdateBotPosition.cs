@@ -17,7 +17,10 @@ public class UpdateBotPosition : MonoBehaviour
 
     private GearMove GearMove_Script;
 
-    public Vector3 newPos;
+    public float rotationSpeed = 10;
+    public Vector3 currentEulerAngles;
+
+    // public Vector3 newPos;
 
 
     // Start is called before the first frame update
@@ -29,6 +32,12 @@ public class UpdateBotPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        
+    }
+
+    void FixedUpdate()
+    {
         frameCount++;
         // if(frameCount%5 == 0)
         // {
@@ -38,11 +47,12 @@ public class UpdateBotPosition : MonoBehaviour
         {
             // if(frameCount%30 == 0)
             // {
-            updatePositions(newPos);
-            // }
+            updatePositions();
+            
         }
         
     }
+    
 
     async void getPositions()
     {
@@ -60,7 +70,7 @@ public class UpdateBotPosition : MonoBehaviour
         // newPos = new Vector3(x, y, z);
     }
 
-    async void updatePositions(Vector3 newPosition)
+    async void updatePositions()
     {
 
         var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
@@ -71,6 +81,11 @@ public class UpdateBotPosition : MonoBehaviour
         var x = float.Parse(robots.position.x);
         var y = float.Parse(robots.position.y);
         var z = float.Parse(robots.position.z);
+        var rotx = float.Parse(robots.position.rotx);
+        var roty = float.Parse(robots.position.roty);
+        var rotz = float.Parse(robots.position.rotz);
+        
+        
         var newX = x.ToString("0.00");
         var newY = y.ToString("0.00");
         var newZ = z.ToString("0.00");
@@ -87,7 +102,11 @@ public class UpdateBotPosition : MonoBehaviour
         // print(y);
         // print(z);
         // newPos = new Vector3(newX, newY, newZ);
-        newPos = new Vector3(newXF,newYF,newZF);
+        var newPos = new Vector3(x,y,z);
+        var newRot = new Vector3(rotx, roty, rotz);
+
+        // var currentEulerAngles;
+        currentEulerAngles += new Vector3(rotx, roty, rotz) * Time.deltaTime * rotationSpeed;
         
         
         // JsonUtility.FromJsonOverwrite(positionResponseString, robotGears);
@@ -95,10 +114,10 @@ public class UpdateBotPosition : MonoBehaviour
         
         
         // var newPosition = new Vector3(1,1,1);
-        // GearMove_Script.rb.MovePosition(newPosition);
+        GearMove_Script.rb.MovePosition(newPos);
         
         // print(newPosition);
-        Gears.transform.position = newPosition;
+        // Gears.transform.eulerAngles = currentEulerAngles;
     }
 }
 

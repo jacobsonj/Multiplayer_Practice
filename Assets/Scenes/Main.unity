@@ -155,7 +155,8 @@ MonoBehaviour:
   Brute: {fileID: 1282850751519923055}
   Pump: {fileID: 1282850751926949822}
   Sat: {fileID: 682945517}
-  newPos: {x: 0, y: 0, z: 0}
+  rotationSpeed: 10
+  currentEulerAngles: {x: 0, y: 0, z: 0}
 --- !u!4 &429326559
 Transform:
   m_ObjectHideFlags: 0
@@ -601,6 +602,11 @@ PrefabInstance:
     - target: {fileID: 2642976033146281368, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
       propertyPath: isLocalPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642976033146281368, guid: f2a49ec875de843a2a7f007c03956d4b,
+        type: 3}
+      propertyPath: toggleSelected
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3846115058874074027, guid: f2a49ec875de843a2a7f007c03956d4b,
