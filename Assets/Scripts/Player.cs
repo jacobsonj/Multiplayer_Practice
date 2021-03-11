@@ -51,14 +51,14 @@ public class Player : MonoBehaviour
         rb.MovePosition(transform.position + moveSpeed * Time.deltaTime * direction);
 
 
-        if(time == 0)
-        {
-            time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        }
-        if(time == new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds())
-        {
-            return;
-        }
+        // if(time == 0)
+        // {
+        //     time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        // }
+        // if(time == new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds())
+        // {
+        //     return;
+        // }
         // print(time);
         sendPos();
         
