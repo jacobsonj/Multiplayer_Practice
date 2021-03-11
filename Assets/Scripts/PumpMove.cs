@@ -7,7 +7,7 @@ public class PumpMove : Player
     // Start is called before the first frame update
     void Start()
     {
-        
+        name = "Pump";
     }
 
     // Update is called once per frame

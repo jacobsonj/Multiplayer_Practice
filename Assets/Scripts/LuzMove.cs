@@ -7,7 +7,7 @@ public class LuzMove : Player
     // Start is called before the first frame update
     void Start()
     {
-        
+        name = "Luz";
     }
 
     // Update is called once per frame

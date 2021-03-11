@@ -19,11 +19,13 @@ public class Player : MonoBehaviour
 
     public bool toggleSelected;
 
+    public string name;
+
     
 
     void Start()
     {
-
+        
     }
     async void HandleMovement()
     {
@@ -64,17 +66,18 @@ public class Player : MonoBehaviour
 
     async void sendPos()
     {
+        // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var posx = transform.position.x.ToString();
         var posy = transform.position.y.ToString();
         var posz = transform.position.z.ToString();
         
-        var rotx = transform.position.x.ToString();
-        var roty = transform.position.y.ToString();
-        var rotz = transform.position.z.ToString();
+        var rotx = transform.rotation.x.ToString();
+        var roty = transform.rotation.y.ToString();
+        var rotz = transform.rotation.z.ToString();
         
         var robot = new Robot();
-        robot.name = "gears";
+        robot.name = name;
         robot.position = new Position();
         robot.position.x = posx;
         robot.position.y = posy;
@@ -105,10 +108,10 @@ public class Player : MonoBehaviour
 
         var responseString = await response.Content.ReadAsStringAsync();
         
-        var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+        // var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
 
-        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        print(positionResponseString);
+        // var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+        // print(positionResponseString);
     }
 
     async void FixedUpdate()
@@ -146,3 +149,10 @@ public class Robot
     public string name;
     public Position position;
 }
+
+[Serializable]
+public class Bots
+{
+    public Robot robot;
+}
+

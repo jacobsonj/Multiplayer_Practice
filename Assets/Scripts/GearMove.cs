@@ -9,6 +9,7 @@ public class GearMove : Player
     void Start()
     {
         toggleSelected = true;
+        name = "Gears";
     }
 
     // Update is called once per frame
