@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
         robot.position.rotx = rotx;
         robot.position.roty = roty;
         robot.position.rotz = rotz;
+        robot.position.rotation = transform.rotation;
     
         var values = new Dictionary<string, string>
         {
@@ -140,7 +141,7 @@ public class Position
     public string rotx;
     public string roty;
     public string rotz;
-
+    public Quaternion rotation;
 }
 
 [Serializable]

@@ -17,8 +17,9 @@ public class UpdateBotPosition : MonoBehaviour
 
     private GearMove GearMove_Script;
 
-    public float rotationSpeed = 10;
+    public float rotationSpeed = 10f;
     public Vector3 currentEulerAngles;
+    
 
     // public Vector3 newPos;
 
@@ -78,6 +79,7 @@ public class UpdateBotPosition : MonoBehaviour
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
         // var robots = JsonUtility.FromJson<Dictionary<string, Dictionary<string, string>>>(positionResponseString);
         var robots = JsonUtility.FromJson<Robot>(positionResponseString);
+        print(robots.position.rotation);
         var x = float.Parse(robots.position.x);
         var y = float.Parse(robots.position.y);
         var z = float.Parse(robots.position.z);
@@ -106,7 +108,7 @@ public class UpdateBotPosition : MonoBehaviour
         var newRot = new Vector3(rotx, roty, rotz);
 
         // var currentEulerAngles;
-        currentEulerAngles += new Vector3(rotx, roty, rotz) * Time.deltaTime * rotationSpeed;
+        // currentEulerAngles += new Vector3(rotx, roty, rotz) * Time.deltaTime * rotationSpeed;
         
         
         // JsonUtility.FromJsonOverwrite(positionResponseString, robotGears);
@@ -115,7 +117,7 @@ public class UpdateBotPosition : MonoBehaviour
         
         // var newPosition = new Vector3(1,1,1);
         GearMove_Script.rb.MovePosition(newPos);
-        
+        Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.position.rotation,  Time.deltaTime * rotationSpeed);
         // print(newPosition);
         // Gears.transform.eulerAngles = currentEulerAngles;
     }
