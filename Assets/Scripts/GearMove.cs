@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GearMove : Player
 {
-    public bool isLocalPlayer;
+    
     // Start is called before the first frame update
     void Start()
     {

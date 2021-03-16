@@ -13,11 +13,12 @@ public class Player : MonoBehaviour
     public Rigidbody rb;
     public Vector3 direction;
     public float moveSpeed = 10;
-    public float rotateSpeed = 10;
+    public float rotateSpeed = 10f;
     private long time = 0;
     private static readonly HttpClient client = new HttpClient();
 
     public bool toggleSelected;
+    public bool isLocalPlayer;
 
     public string name;
 
@@ -68,51 +69,17 @@ public class Player : MonoBehaviour
     {
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        var posx = transform.position.x.ToString();
-        var posy = transform.position.y.ToString();
-        var posz = transform.position.z.ToString();
-        
-        var rotx = transform.rotation.x.ToString();
-        var roty = transform.rotation.y.ToString();
-        var rotz = transform.rotation.z.ToString();
-        
         var robot = new Robot();
         robot.name = name;
         robot.position = new Position();
-        robot.position.x = posx;
-        robot.position.y = posy;
-        robot.position.z = posz;
-        robot.position.rotx = rotx;
-        robot.position.roty = roty;
-        robot.position.rotz = rotz;
+        robot.position.position = transform.position;
         robot.position.rotation = transform.rotation;
     
-        var values = new Dictionary<string, string>
-        {
-            // {name: "gears"}
-            { "posx", posx },
-            { "posy", posy },
-            { "posz", posz },
-            { "rotx", rotx },
-            { "roty", roty },
-            { "rotz", rotz }
-        };
-        // print(transform.position);
-        
-        // var json = new JavaScriptSerializer().Serialize(robot);
         string json = JsonUtility.ToJson(robot);
-        // print(json);
-        
-        // var content = new FormUrlEncodedContent(json);
 
         var response = await client.PostAsync("http://localhost:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
 
         var responseString = await response.Content.ReadAsStringAsync();
-        
-        // var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
-
-        // var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        // print(positionResponseString);
     }
 
     async void FixedUpdate()
@@ -135,12 +102,7 @@ public class Player : MonoBehaviour
 [Serializable]
 public class Position
 {
-    public string x;
-    public string y;
-    public string z;
-    public string rotx;
-    public string roty;
-    public string rotz;
+    public Vector3 position;
     public Quaternion rotation;
 }
 
