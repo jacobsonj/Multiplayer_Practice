@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         // {
         //     return;
         // }
-        // print(time);
+        print(time);
         sendPos();
         
     }

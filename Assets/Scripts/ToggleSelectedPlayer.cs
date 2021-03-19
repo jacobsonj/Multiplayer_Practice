@@ -52,36 +52,46 @@ public class ToggleSelectedPlayer : MonoBehaviour
         bruteMove_script.toggleSelected = false;
         pumpMove_script.toggleSelected = false;
         satMove_script.toggleSelected = false;
+        gearMove_script.isLocalPlayer = false;
+        luzMove_script.isLocalPlayer = false;
+        bruteMove_script.isLocalPlayer = false;
+        pumpMove_script.isLocalPlayer = false;
+        satMove_script.isLocalPlayer = false;
     }
 
     public void selectGear()
     {
         deselectMove();
         gearMove_script.toggleSelected = true;
+        gearMove_script.isLocalPlayer = true;
         cameraFollow_script.togglePlayerFollow(Gears);
     }
     public void selectLuz()
     {
         deselectMove();
         luzMove_script.toggleSelected = true;
+        luzMove_script.isLocalPlayer = true;
         cameraFollow_script.togglePlayerFollow(Luz);
     }
     public void selectBrute()
     {
         deselectMove();
         bruteMove_script.toggleSelected = true;
+        bruteMove_script.isLocalPlayer = true;
         cameraFollow_script.togglePlayerFollow(Brute);
     }
     public void selectPump()
     {
         deselectMove();
         pumpMove_script.toggleSelected = true;
+        pumpMove_script.isLocalPlayer = true;
         cameraFollow_script.togglePlayerFollow(Pump);
     }
     public void selectSat()
     {
         deselectMove();
         satMove_script.toggleSelected = true;
+        satMove_script.isLocalPlayer = true;
         cameraFollow_script.togglePlayerFollow(Sat);
     }
 
