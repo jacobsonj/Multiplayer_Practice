@@ -18,7 +18,7 @@ public class ServerRequest : MonoBehaviour
 
     //     var content = new FormUrlEncodedContent(values);
 
-    //     var response = await client.PostAsync("http://localhost:7000/", content);
+    //     var response = await client.PostAsync("http://74.207.254.19:7000/", content);
 
     //     var responseString = await response.Content.ReadAsStringAsync();
     // }
