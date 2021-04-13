@@ -19,8 +19,11 @@ public class Player : MonoBehaviour
 
     public bool toggleSelected;
     public bool isLocalPlayer;
+    public bool isBeingCarried = false;
 
     public string name;
+    public GameObject Brute;
+    public Vector3 liftPos;
 
     
 
@@ -37,7 +40,7 @@ public class Player : MonoBehaviour
         // transform.position = transform.position + Movement;
         
         
-        // if(Movement == new Vector3(0,0,0) )
+        // if(direction != Vector3.zero)
         // {
         //     return;
         // }
@@ -61,7 +64,12 @@ public class Player : MonoBehaviour
         //     return;
         // }
         print(time);
-        sendPos();
+        
+        if(!isBeingCarried)
+        {
+            sendPos();
+        }
+        
         
     }
 
@@ -89,12 +97,26 @@ public class Player : MonoBehaviour
             HandleMovement();  
         }
         
+        if(isBeingCarried)
+        {
+            transform.position = Brute.transform.TransformPoint(liftPos);
+            GetComponent<Rigidbody>().useGravity = false;
+        }
+        else if(!isBeingCarried)
+        {
+           GetComponent<Rigidbody>().useGravity = true; 
+        }
         
         
     }
 
     public void toggleSelectedState (){
         toggleSelected = !toggleSelected;
+    }
+
+    public void toggleIsBeingCarried()
+    {
+        isBeingCarried = !isBeingCarried;
     }
 
 }
@@ -117,5 +139,12 @@ public class Robot
 public class Bots
 {
     public Robot robot;
+}
+
+[Serializable]
+public class State
+{
+    public bool isLocalPlayer;
+    public bool toggleSelected;
 }
 
