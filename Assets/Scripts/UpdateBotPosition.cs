@@ -100,13 +100,14 @@ public class UpdateBotPosition : MonoBehaviour
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
         var robots = JsonUtility.FromJson<Robots>(positionResponseString);
         // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
+        print(robots.Luz.state.isBeingCarried);
         // Gears
         GearMove_Script.rb.MovePosition(robots.Gears.position.position);
         Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
         // Luz
         LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
         Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+        LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
         // Brute
         BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
         Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);

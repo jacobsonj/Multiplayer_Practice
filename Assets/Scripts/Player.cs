@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     public bool toggleSelected;
     public bool isLocalPlayer;
-    public bool isBeingCarried = false;
+    public bool isBeingCarried;
 
     public string name;
     public GameObject Brute;
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
+        liftPos = new Vector3(0,1,0);
     }
     async void HandleMovement()
     {
@@ -65,10 +65,10 @@ public class Player : MonoBehaviour
         // }
         print(time);
         
-        if(!isBeingCarried)
-        {
+        // if(!isBeingCarried)
+        // {
             sendPos();
-        }
+        // }
         
         
     }
@@ -89,6 +89,24 @@ public class Player : MonoBehaviour
 
         var responseString = await response.Content.ReadAsStringAsync();
     }
+    
+    async void sendState()
+    {
+        // print(name);
+        time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        var robot = new Robot();
+        robot.name = name;
+        robot.state = new State();
+        robot.state.isBeingCarried = isBeingCarried;
+    
+        string json = JsonUtility.ToJson(robot);
+
+        var response = await client.PostAsync("http://74.207.254.19:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
+
+        var responseString = await response.Content.ReadAsStringAsync();
+    }
+
+    
 
     async void FixedUpdate()
     {
@@ -117,8 +135,8 @@ public class Player : MonoBehaviour
     public void toggleIsBeingCarried()
     {
         isBeingCarried = !isBeingCarried;
+        sendState();
     }
-
 }
 
 [Serializable]
@@ -133,6 +151,7 @@ public class Robot
 {
     public string name;
     public Position position;
+    public State state;
 }
 
 [Serializable]
@@ -144,7 +163,8 @@ public class Bots
 [Serializable]
 public class State
 {
-    public bool isLocalPlayer;
-    public bool toggleSelected;
+    // public bool isLocalPlayer;
+    // public bool toggleSelected;
+    public bool isBeingCarried;
 }
 
