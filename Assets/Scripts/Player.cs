@@ -163,6 +163,7 @@ public class Player : MonoBehaviour
     public void toggleIsBeingCarried()
     {
         isBeingCarried = !isBeingCarried;
+        sendPos();
         sendState();
     }
 }
