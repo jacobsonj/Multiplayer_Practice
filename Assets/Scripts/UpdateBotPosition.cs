@@ -46,10 +46,11 @@ public class UpdateBotPosition : MonoBehaviour
 
     void FixedUpdate()
     {
-        frameCount++;
-        // if(frameCount%30 == 0)
+        // frameCount++;
+        // if(frameCount%10 == 0)
         // {
             updatePositions();
+            updateStates();
         // }
        
         // if(GearMove_Script.isLocalPlayer)
@@ -95,19 +96,20 @@ public class UpdateBotPosition : MonoBehaviour
 
     async void updatePositions()
     {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+        // var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+        var positionResponse = await client.PostAsync("http://localhost:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
 
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+        var robots = JsonUtility.FromJson<RobotsPositions>(positionResponseString);
         // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots.Luz.state.isBeingCarried);
+        print("CHEEEECK THIIIIIIIS" + robots.Gears.position.rotation);
         // Gears
         GearMove_Script.rb.MovePosition(robots.Gears.position.position);
         Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
         // Luz
         LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
         Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
-        LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
+        // LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
         // Brute
         BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
         Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
@@ -118,134 +120,170 @@ public class UpdateBotPosition : MonoBehaviour
         SatMove_Script.rb.MovePosition(robots.Sat.position.position);
         Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
     }
-    async void updatePositionsNotGears()
+    async void updateStates()
     {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+        // var positionResponse = await client.PostAsync("http://74.207.254.19:7000/states", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+        var positionResponse = await client.PostAsync("http://localhost:7000/states", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
 
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+        var robots = JsonUtility.FromJson<RobotsStates>(positionResponseString);
+        print("THISSSS IS ITTTTTT" + robots.Luz.state.isBeingCarried);
         // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
+        // print("CHEEEECK THIIIIIIIS" + robots.Gears.position.rotation);
         // Gears
         // GearMove_Script.rb.MovePosition(robots.Gears.position.position);
         // Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
         // Luz
-        LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
-        Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Brute
-        BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
-        Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Pump
-        PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
-        Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Sat
-        SatMove_Script.rb.MovePosition(robots.Sat.position.position);
-        Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
-    }
-    async void updatePositionsNotLuz()
-    {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
-
-        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
-        // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
-        // Gears
-        GearMove_Script.rb.MovePosition(robots.Gears.position.position);
-        Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Luz
         // LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
         // Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Brute
-        BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
-        Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Pump
-        PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
-        Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Sat
-        SatMove_Script.rb.MovePosition(robots.Sat.position.position);
-        Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
-    }
-    async void updatePositionsNotBrute()
-    {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
-
-        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
-        // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
-        // Gears
-        GearMove_Script.rb.MovePosition(robots.Gears.position.position);
-        Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Luz
-        LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
-        Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+        LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
         // Brute
         // BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
         // Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
         // Pump
-        PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
-        Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Sat
-        SatMove_Script.rb.MovePosition(robots.Sat.position.position);
-        Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
-    }
-    async void updatePositionsNotPump()
-    {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
-
-        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
-        // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
-        // Gears
-        GearMove_Script.rb.MovePosition(robots.Gears.position.position);
-        Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Luz
-        LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
-        Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Brute
-        BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
-        Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Pump
         // PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
         // Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Sat
-        SatMove_Script.rb.MovePosition(robots.Sat.position.position);
-        Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
-    }
-    async void updatePositionsNotSat()
-    {
-        var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
-
-        var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
-        var robots = JsonUtility.FromJson<Robots>(positionResponseString);
-        // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print(robots);
-        // Gears
-        GearMove_Script.rb.MovePosition(robots.Gears.position.position);
-        Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Luz
-        LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
-        Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Brute
-        BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
-        Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
-        // Pump
-        PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
-        Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
         // Sat
         // SatMove_Script.rb.MovePosition(robots.Sat.position.position);
         // Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
     }
+    // async void updatePositionsNotGears()
+    // {
+    //     var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+    //     var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+    //     var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+    //     // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
+    //     print(robots);
+    //     // Gears
+    //     // GearMove_Script.rb.MovePosition(robots.Gears.position.position);
+    //     // Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Luz
+    //     LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
+    //     Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Brute
+    //     BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
+    //     Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Pump
+    //     PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
+    //     Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Sat
+    //     SatMove_Script.rb.MovePosition(robots.Sat.position.position);
+    //     Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+    // }
+    // async void updatePositionsNotLuz()
+    // {
+    //     var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+    //     var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+    //     var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+    //     // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
+    //     print(robots);
+    //     // Gears
+    //     GearMove_Script.rb.MovePosition(robots.Gears.position.position);
+    //     Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Luz
+    //     // LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
+    //     // Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Brute
+    //     BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
+    //     Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Pump
+    //     PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
+    //     Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Sat
+    //     SatMove_Script.rb.MovePosition(robots.Sat.position.position);
+    //     Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+    // }
+    // async void updatePositionsNotBrute()
+    // {
+    //     var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+    //     var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+    //     var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+    //     // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
+    //     print(robots);
+    //     // Gears
+    //     GearMove_Script.rb.MovePosition(robots.Gears.position.position);
+    //     Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Luz
+    //     LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
+    //     Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Brute
+    //     // BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
+    //     // Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Pump
+    //     PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
+    //     Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Sat
+    //     SatMove_Script.rb.MovePosition(robots.Sat.position.position);
+    //     Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+    // }
+    // async void updatePositionsNotPump()
+    // {
+    //     var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+    //     var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+    //     var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+    //     // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
+    //     print(robots);
+    //     // Gears
+    //     GearMove_Script.rb.MovePosition(robots.Gears.position.position);
+    //     Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Luz
+    //     LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
+    //     Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Brute
+    //     BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
+    //     Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Pump
+    //     // PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
+    //     // Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Sat
+    //     SatMove_Script.rb.MovePosition(robots.Sat.position.position);
+    //     Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+    // }
+    // async void updatePositionsNotSat()
+    // {
+    //     var positionResponse = await client.PostAsync("http://74.207.254.19:7000/positions", new StringContent("{\"name\": \"gears\"}", Encoding.UTF8, "application/json"));
+
+    //     var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
+    //     var robots = JsonUtility.FromJson<Robots>(positionResponseString);
+    //     // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
+    //     print(robots);
+    //     // Gears
+    //     GearMove_Script.rb.MovePosition(robots.Gears.position.position);
+    //     Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Luz
+    //     LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
+    //     Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Brute
+    //     BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
+    //     Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Pump
+    //     PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
+    //     Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+    //     // Sat
+    //     // SatMove_Script.rb.MovePosition(robots.Sat.position.position);
+    //     // Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+    // }
 }
 
 [Serializable]
-public class Robots
+public class RobotsPositions
 {
-    public Robot Gears;
-    public Robot Luz;
-    public Robot Brute;
-    public Robot Pump;
-    public Robot Sat;
+    public RobotPosition Gears;
+    public RobotPosition Luz;
+    public RobotPosition Brute;
+    public RobotPosition Pump;
+    public RobotPosition Sat;
+}
+[Serializable]
+public class RobotsStates
+{
+    public RobotState Gears;
+    public RobotState Luz;
+    public RobotState Brute;
+    public RobotState Pump;
+    public RobotState Sat;
 }

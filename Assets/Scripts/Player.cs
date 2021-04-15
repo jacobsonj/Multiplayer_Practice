@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         // {
         //     return;
         // }
-        print(time);
+        // print(time);
         
         // if(!isBeingCarried)
         // {
@@ -75,35 +75,62 @@ public class Player : MonoBehaviour
 
     async void sendPos()
     {
+        var currentPos = transform.position.Round(2);
+        print("LOOOOOOOOK HEEEEEEEEERE" + currentPos);
+        // var currentRot = transform.rotation.Round(2)
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        var robot = new Robot();
+        var robot = new RobotPosition();
         robot.name = name;
         robot.position = new Position();
-        robot.position.position = transform.position;
+        robot.position.position = currentPos;
         robot.position.rotation = transform.rotation;
     
         string json = JsonUtility.ToJson(robot);
 
-        var response = await client.PostAsync("http://74.207.254.19:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
+        // var response = await client.PostAsync("http://74.207.254.19:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
+        var response = await client.PostAsync("http://localhost:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
 
         var responseString = await response.Content.ReadAsStringAsync();
     }
     
     async void sendState()
     {
+        var currentPos = transform.position.Round(2);
+        
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        var robot = new Robot();
+        var robot = new RobotState();
         robot.name = name;
         robot.state = new State();
         robot.state.isBeingCarried = isBeingCarried;
     
         string json = JsonUtility.ToJson(robot);
 
-        var response = await client.PostAsync("http://74.207.254.19:7000/position/save", new StringContent(json, Encoding.UTF8, "application/json"));
+        // var response = await client.PostAsync("http://74.207.254.19:7000/state/save", new StringContent(json, Encoding.UTF8, "application/json"));
+        var response = await client.PostAsync("http://localhost:7000/state/save", new StringContent(json, Encoding.UTF8, "application/json"));
 
         var responseString = await response.Content.ReadAsStringAsync();
+    }
+
+    void Update()
+    {
+
+        // print("LOOOOOOOOK HEEEEEEEEERE");
+       // if(time == 0)
+        // {
+        //     time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        // }
+        // if(time == new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds())
+        // {
+        //     return;
+        // }
+        // print(time);
+        
+        // if(!isBeingCarried)
+        // {
+            // sendPos();
+        // } 
     }
 
     
@@ -114,6 +141,8 @@ public class Player : MonoBehaviour
         {
             HandleMovement();  
         }
+
+        
         
         if(isBeingCarried)
         {
@@ -124,7 +153,6 @@ public class Player : MonoBehaviour
         {
            GetComponent<Rigidbody>().useGravity = true; 
         }
-        
         
     }
 
@@ -147,18 +175,24 @@ public class Position
 }
 
 [Serializable]
-public class Robot
+public class RobotPosition
 {
     public string name;
     public Position position;
-    public State state;
 }
 
 [Serializable]
-public class Bots
+public class RobotState
 {
-    public Robot robot;
+    public string name;
+    public State state;
 }
+
+// [Serializable]
+// public class Bots
+// {
+//     public Robot robot;
+// }
 
 [Serializable]
 public class State
