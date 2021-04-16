@@ -162,10 +162,28 @@ public class Player : MonoBehaviour
 
     public void toggleIsBeingCarried()
     {
-        isBeingCarried = !isBeingCarried;
-        sendPos();
-        sendState();
+        if(!isBeingCarried)
+        {
+            isBeingCarried = !isBeingCarried;
+            sendState();   
+        }
+        else if(isBeingCarried)
+        {
+            StartCoroutine(ExecuteAfterTime(1));
+        }
     }
+
+    IEnumerator ExecuteAfterTime(float time)
+        {
+            isBeingCarried = !isBeingCarried;
+            sendPos();
+            toggleSelectedState();
+            sendState();
+            yield return new WaitForSeconds(time);
+            toggleSelectedState();
+            sendState();
+     
+        }
 }
 
 [Serializable]
