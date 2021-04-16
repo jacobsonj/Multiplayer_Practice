@@ -137,6 +137,7 @@ public class UpdateBotPosition : MonoBehaviour
         // LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
         // Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
         LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
+        LuzMove_Script.toggleSelected = robots.Luz.state.toggleSelected;
         // Brute
         // BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
         // Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);

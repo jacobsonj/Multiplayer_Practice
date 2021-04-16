@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     public bool toggleSelected;
     public bool isLocalPlayer;
     public bool isBeingCarried;
-
     public string name;
     public GameObject Brute;
     public Vector3 liftPos;
@@ -104,6 +103,7 @@ public class Player : MonoBehaviour
         robot.name = name;
         robot.state = new State();
         robot.state.isBeingCarried = isBeingCarried;
+        robot.state.toggleSelected = toggleSelected;
     
         string json = JsonUtility.ToJson(robot);
 
@@ -137,7 +137,7 @@ public class Player : MonoBehaviour
 
     async void FixedUpdate()
     {
-        if (toggleSelected == true)
+        if (isLocalPlayer == true)
         {
             HandleMovement();  
         }
@@ -158,6 +158,8 @@ public class Player : MonoBehaviour
 
     public void toggleSelectedState (){
         toggleSelected = !toggleSelected;
+        print(toggleSelected);
+        sendState();
     }
 
     public void toggleIsBeingCarried()
@@ -169,18 +171,30 @@ public class Player : MonoBehaviour
         }
         else if(isBeingCarried)
         {
-            StartCoroutine(ExecuteAfterTime(1));
+            if(isLocalPlayer)
+            {
+                isBeingCarried = !isBeingCarried;
+                sendState();   
+            }
+            else if(!isLocalPlayer)
+            {
+                StartCoroutine(ExecuteAfterTime(3));
+            }
         }
     }
 
     IEnumerator ExecuteAfterTime(float time)
         {
+
+            var rb = GetComponent<Rigidbody>();
             isBeingCarried = !isBeingCarried;
             sendPos();
-            toggleSelectedState();
+            rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+            isLocalPlayer = true;
             sendState();
             yield return new WaitForSeconds(time);
-            toggleSelectedState();
+            isLocalPlayer = false;
+            rb.constraints = RigidbodyConstraints.None;
             sendState();
      
         }
@@ -219,5 +233,6 @@ public class State
     // public bool isLocalPlayer;
     // public bool toggleSelected;
     public bool isBeingCarried;
+    public bool toggleSelected;
 }
 
