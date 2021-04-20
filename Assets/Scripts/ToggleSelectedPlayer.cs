@@ -18,13 +18,15 @@ public class ToggleSelectedPlayer : MonoBehaviour
     SatMove satMove_script;
     public CamerFollow cameraFollow_script;
 
+    public int playerCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         getMoveScripts();
         cameraFollow_script = Main_Camera.GetComponent<CamerFollow>();
-        // selectGear();
         selectCameraFollow();
+        // we need something in the start that goes and gets the states from the server and updates the player states so that new comers are jumping into the flow rather than forcing everyone to get on their flow.
     }
 
     // Update is called once per frame
@@ -32,12 +34,13 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown("t"))
         {
-            print("toggle");
+            if(playerCount >= 5)
+            {
+                return;
+            }
             Toggle();
         }
     }
-
-    
 
     public void getMoveScripts()
     {
@@ -54,48 +57,32 @@ public class ToggleSelectedPlayer : MonoBehaviour
         {
             cameraFollow_script.togglePlayerFollow(Gears);   
         }
-            
-            //luz to brute
         else if(luzMove_script.toggleSelected == true)
         {
             cameraFollow_script.togglePlayerFollow(Luz);
         }
-            
-            //brute to pump
         else if(bruteMove_script.toggleSelected == true)
         {
             cameraFollow_script.togglePlayerFollow(Brute);
         }
-            
-            //pump to sat
         else if(pumpMove_script.toggleSelected == true)
         {
             cameraFollow_script.togglePlayerFollow(Pump);
         }
-            //sat to gears
-        else if(satMove_script.toggleSelected == true){
-        
+        else if(satMove_script.toggleSelected == true)
+        {
             cameraFollow_script.togglePlayerFollow(Sat);
         }
     }
 
     public void deselectMove()
     {
-        // gearMove_script.toggleSelected = false;
-        // luzMove_script.toggleSelected = false;
-        // bruteMove_script.toggleSelected = false;
-        // pumpMove_script.toggleSelected = false;
-        // satMove_script.toggleSelected = false;
         gearMove_script.isLocalPlayer = false;
         luzMove_script.isLocalPlayer = false;
         bruteMove_script.isLocalPlayer = false;
         pumpMove_script.isLocalPlayer = false;
         satMove_script.isLocalPlayer = false;
-        gearMove_script.sendState();
-        luzMove_script.sendState();
-        bruteMove_script.sendState();
-        pumpMove_script.sendState();
-        satMove_script.sendState();
+        sendAllState();
     }
 
     public void sendAllState()
@@ -111,8 +98,8 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if(gearMove_script.toggleSelected)
         {
-            satMove_script.isLocalPlayer = false;
-            satMove_script.toggleSelected = false;
+            satMove_script.isLocalPlayer = isSelected;
+            satMove_script.toggleSelected = isSelected;
             selectLuz(gearMove_script.toggleSelected);
         }
         else
@@ -129,8 +116,8 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if(luzMove_script.toggleSelected)
         {
-            gearMove_script.isLocalPlayer = false;
-            gearMove_script.toggleSelected = false;
+            gearMove_script.isLocalPlayer = isSelected;
+            gearMove_script.toggleSelected = isSelected;
             selectBrute(luzMove_script.toggleSelected);
         }
         else
@@ -147,8 +134,8 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if(bruteMove_script.toggleSelected)
         {
-            luzMove_script.isLocalPlayer = false;
-            luzMove_script.toggleSelected = false;
+            luzMove_script.isLocalPlayer = isSelected;
+            luzMove_script.toggleSelected = isSelected;
             selectPump(bruteMove_script.toggleSelected);
         }
         else
@@ -165,8 +152,8 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if(pumpMove_script.toggleSelected)
         {
-            bruteMove_script.isLocalPlayer = false;
-            bruteMove_script.toggleSelected = false;
+            bruteMove_script.isLocalPlayer = isSelected;
+            bruteMove_script.toggleSelected = isSelected;
             selectSat(pumpMove_script.toggleSelected);
         }
         else
@@ -183,14 +170,14 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         if(satMove_script.toggleSelected)
         {
-            pumpMove_script.isLocalPlayer = false;
-            pumpMove_script.toggleSelected = false;
+            pumpMove_script.isLocalPlayer = isSelected;
+            pumpMove_script.toggleSelected = isSelected;
             selectGear(satMove_script.toggleSelected);
         }
         else
         {
             deselectMove();
-            pumpMove_script.toggleSelected = false;
+            pumpMove_script.toggleSelected = isSelected;
             satMove_script.toggleSelected = true;
             satMove_script.isLocalPlayer = true;
             cameraFollow_script.togglePlayerFollow(Sat);
@@ -198,42 +185,68 @@ public class ToggleSelectedPlayer : MonoBehaviour
         sendAllState(); 
     }
 
+    public void updatePlayerCount()
+    {
+        playerCount = 0;
+        //gear isLocal
+        if(gearMove_script.toggleSelected)
+        {
+            playerCount ++;
+        }          
+        //luz isLocal
+        if(luzMove_script.toggleSelected)
+        {
+            playerCount ++;
+        }
+        //brute isLocal
+        if(bruteMove_script.toggleSelected)
+        {
+            playerCount ++;
+        }
+        //pump isLocal
+        if(pumpMove_script.toggleSelected)
+        {
+           playerCount ++;
+        }
+        //sat isLocal
+        if(satMove_script.toggleSelected)
+        {
+            playerCount ++;
+        }
+        
+    }
 
     public void Toggle()
     {
 
         {
-            //gear to luz
-            if(gearMove_script.isLocalPlayer == true){
-                
+            //gear isLocal
+            if(gearMove_script.isLocalPlayer == true)
+            {
                 selectLuz(false);
-                // cameraFollow_script.togglePlayerFollow(Luz);
-            }
-            
-            //luz to brute
-            else if(luzMove_script.isLocalPlayer == true){
-                print("WEEEE DIID 222222");
+            }          
+            //luz isLocal
+            else if(luzMove_script.isLocalPlayer == true)
+            {
                 selectBrute(false);
-                // cameraFollow_script.togglePlayerFollow(Brute);
             }
-            
-            //brute to pump
-            else if(bruteMove_script.isLocalPlayer == true){
+            //brute isLocal
+            else if(bruteMove_script.isLocalPlayer == true)
+            {
                 selectPump(false);
-                // cameraFollow_script.togglePlayerFollow(Pump);
             }
-            
-            //pump to sat
-            else if(pumpMove_script.isLocalPlayer == true){
+            //pump isLocal
+            else if(pumpMove_script.isLocalPlayer == true)
+            {
                 selectSat(false);
                 // cameraFollow_script.togglePlayerFollow(Sat);
             }
-            //sat to gears
-            else if(satMove_script.isLocalPlayer == true){
+            //sat isLocal
+            else if(satMove_script.isLocalPlayer == true)
+            {
                 selectGear(false);
-                // cameraFollow_script.togglePlayerFollow(Gears);
             }
+            updatePlayerCount();
         }
-        
     }
 }
