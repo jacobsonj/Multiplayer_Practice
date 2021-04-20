@@ -31,10 +31,7 @@ public class Player : MonoBehaviour
     
     }
 
-    public void printthething()
-    {
-        print("print the thing!!!!!!!!!!!!!!!");
-    }
+
     async void HandleMovement()
     {
         
@@ -99,7 +96,6 @@ public class Player : MonoBehaviour
     
     public async void sendState()
     {
-        print("player toggle selected" + toggleSelected);
         
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
