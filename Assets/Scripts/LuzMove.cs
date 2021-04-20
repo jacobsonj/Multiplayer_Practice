@@ -9,7 +9,8 @@ public class LuzMove : Player
     void Start()
     {
         name = "Luz";
-        
+        sendState();
+        liftPos = new Vector3(0,1,0);
     }
 
     // Update is called once per frame

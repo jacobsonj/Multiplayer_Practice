@@ -28,7 +28,12 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        liftPos = new Vector3(0,1,0);
+    
+    }
+
+    public void printthething()
+    {
+        print("print the thing!!!!!!!!!!!!!!!");
     }
     async void HandleMovement()
     {
@@ -75,7 +80,6 @@ public class Player : MonoBehaviour
     async void sendPos()
     {
         var currentPos = transform.position.Round(2);
-        print("LOOOOOOOOK HEEEEEEEEERE" + currentPos);
         // var currentRot = transform.rotation.Round(2)
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
@@ -93,9 +97,9 @@ public class Player : MonoBehaviour
         var responseString = await response.Content.ReadAsStringAsync();
     }
     
-    async void sendState()
+    public async void sendState()
     {
-        var currentPos = transform.position.Round(2);
+        print("player toggle selected" + toggleSelected);
         
         // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();

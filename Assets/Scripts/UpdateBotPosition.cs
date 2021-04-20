@@ -102,7 +102,6 @@ public class UpdateBotPosition : MonoBehaviour
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
         var robots = JsonUtility.FromJson<RobotsPositions>(positionResponseString);
         // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
-        print("CHEEEECK THIIIIIIIS" + robots.Gears.position.rotation);
         // Gears
         GearMove_Script.rb.MovePosition(robots.Gears.position.position);
         Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
@@ -127,26 +126,24 @@ public class UpdateBotPosition : MonoBehaviour
 
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
         var robots = JsonUtility.FromJson<RobotsStates>(positionResponseString);
-        print("THISSSS IS ITTTTTT" + robots.Luz.state.isBeingCarried);
+        
         // var robots = JsonUtility.FromJson<Robots>("{ \"Gears\":{\"name\":\"Gears\"}}");
         // print("CHEEEECK THIIIIIIIS" + robots.Gears.position.rotation);
         // Gears
-        // GearMove_Script.rb.MovePosition(robots.Gears.position.position);
-        // Gears.transform.rotation = Quaternion.Slerp(Gears.transform.rotation, robots.Gears.position.rotation,  Time.deltaTime * rotationSpeed);
+        GearMove_Script.isBeingCarried = robots.Gears.state.isBeingCarried;
+        GearMove_Script.toggleSelected = robots.Gears.state.toggleSelected;
         // Luz
-        // LuzMove_Script.rb.MovePosition(robots.Luz.position.position);
-        // Luz.transform.rotation = Quaternion.Slerp(Luz.transform.rotation, robots.Luz.position.rotation,  Time.deltaTime * rotationSpeed);
         LuzMove_Script.isBeingCarried = robots.Luz.state.isBeingCarried;
         LuzMove_Script.toggleSelected = robots.Luz.state.toggleSelected;
         // Brute
-        // BruteMove_Script.rb.MovePosition(robots.Brute.position.position);
-        // Brute.transform.rotation = Quaternion.Slerp(Brute.transform.rotation, robots.Brute.position.rotation,  Time.deltaTime * rotationSpeed);
+        BruteMove_Script.isBeingCarried = robots.Brute.state.isBeingCarried;
+        BruteMove_Script.toggleSelected = robots.Brute.state.toggleSelected;
         // Pump
-        // PumpMove_Script.rb.MovePosition(robots.Pump.position.position);
-        // Pump.transform.rotation = Quaternion.Slerp(Pump.transform.rotation, robots.Pump.position.rotation,  Time.deltaTime * rotationSpeed);
+        PumpMove_Script.isBeingCarried = robots.Pump.state.isBeingCarried;
+        PumpMove_Script.toggleSelected = robots.Pump.state.toggleSelected;
         // Sat
-        // SatMove_Script.rb.MovePosition(robots.Sat.position.position);
-        // Sat.transform.rotation = Quaternion.Slerp(Sat.transform.rotation, robots.Sat.position.rotation,  Time.deltaTime * rotationSpeed);
+        SatMove_Script.isBeingCarried = robots.Sat.state.isBeingCarried;
+        SatMove_Script.toggleSelected = robots.Sat.state.toggleSelected;
     }
     // async void updatePositionsNotGears()
     // {

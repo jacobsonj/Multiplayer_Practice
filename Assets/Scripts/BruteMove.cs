@@ -9,6 +9,7 @@ public class BruteMove : Player
     void Start()
     {
         name = "Brute";
+        sendState();
     }
 
     // Update is called once per frame
