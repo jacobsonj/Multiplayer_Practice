@@ -450,6 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gears_IDI: {fileID: 1629657734}
   GearsIDI_script: {fileID: 0}
+  frameCount: 0
 --- !u!4 &714189145
 Transform:
   m_ObjectHideFlags: 0
@@ -501,6 +502,8 @@ MonoBehaviour:
   Main_Camera: {fileID: 963194225}
   cameraFollow_script: {fileID: 0}
   playerCount: 0
+  gameObjects: []
+  players: []
 --- !u!4 &828816995
 Transform:
   m_ObjectHideFlags: 0
@@ -938,6 +941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
+  name: 
   materialActive: {fileID: 2100000, guid: 03815539462224f3c91539d379f9687d, type: 2}
   materialInactive: {fileID: 2100000, guid: d0376c9b02da34b66b530bd408b8248f, type: 2}
 --- !u!1 &2041258053
@@ -1094,12 +1098,12 @@ PrefabInstance:
     - target: {fileID: 2642976033146281368, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
       propertyPath: isLocalPlayer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2642976033146281368, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
       propertyPath: toggleSelected
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2642976033146281368, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
@@ -1376,7 +1380,7 @@ PrefabInstance:
     - target: {fileID: 7750811323698504184, guid: 1be1ca5e1070e4b98a5a8547dbda9644,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00000004129385
+      value: 0.000000041293852
       objectReference: {fileID: 0}
     - target: {fileID: 7750811323698504184, guid: 1be1ca5e1070e4b98a5a8547dbda9644,
         type: 3}
@@ -1413,6 +1417,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8817467679314602212, guid: 1be1ca5e1070e4b98a5a8547dbda9644,
+        type: 3}
+      propertyPath: toggleSelected
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817467679314602212, guid: 1be1ca5e1070e4b98a5a8547dbda9644,
+        type: 3}
+      propertyPath: isLocalPlayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be1ca5e1070e4b98a5a8547dbda9644, type: 3}
 --- !u!1001 &8878351341584733084
@@ -1445,17 +1459,17 @@ PrefabInstance:
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0006320006
+      value: 0.0006320007
       objectReference: {fileID: 0}
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.71607906
+      value: 0.7160791
       objectReference: {fileID: 0}
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000086976834
+      value: 0.00008697684
       objectReference: {fileID: 0}
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}

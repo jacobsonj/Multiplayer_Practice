@@ -5,6 +5,8 @@ using UnityEngine;
 public class ToggleSelectedPlayer : MonoBehaviour
 {
 
+
+    
     public GameObject Gears;
     public GameObject Luz;
     public GameObject Brute;
@@ -20,11 +22,17 @@ public class ToggleSelectedPlayer : MonoBehaviour
 
     public int playerCount = 0;
 
+    public GameObject[] gameObjects;
+    public Player[] players;
+
     // Start is called before the first frame update
     void Start()
     {
+
         getMoveScripts();
         cameraFollow_script = Main_Camera.GetComponent<CamerFollow>();
+        gameObjects = new GameObject[] {Gears, Luz, Brute, Pump, Sat};
+        players = new Player[] {gearMove_script, luzMove_script, bruteMove_script, pumpMove_script, satMove_script};
         selectCameraFollow();
         // we need something in the start that goes and gets the states from the server and updates the player states so that new comers are jumping into the flow rather than forcing everyone to get on their flow.
     }
@@ -53,26 +61,38 @@ public class ToggleSelectedPlayer : MonoBehaviour
 
     public void selectCameraFollow()
     {
-        if(gearMove_script.toggleSelected == true)
+
+        
+        
+        for (int i = 0; i < players.Length; i++) 
         {
-            cameraFollow_script.togglePlayerFollow(Gears);   
+            var p = players[i];
+            if(p.isLocalPlayer)
+            {
+                cameraFollow_script.togglePlayerFollow(gameObjects[i]);
+            }
         }
-        else if(luzMove_script.toggleSelected == true)
-        {
-            cameraFollow_script.togglePlayerFollow(Luz);
-        }
-        else if(bruteMove_script.toggleSelected == true)
-        {
-            cameraFollow_script.togglePlayerFollow(Brute);
-        }
-        else if(pumpMove_script.toggleSelected == true)
-        {
-            cameraFollow_script.togglePlayerFollow(Pump);
-        }
-        else if(satMove_script.toggleSelected == true)
-        {
-            cameraFollow_script.togglePlayerFollow(Sat);
-        }
+
+        // if(gearMove_script.toggleSelected == true)
+        // {
+        //     cameraFollow_script.togglePlayerFollow(Gears);   
+        // }
+        // else if(luzMove_script.toggleSelected == true)
+        // {
+        //     cameraFollow_script.togglePlayerFollow(Luz);
+        // }
+        // else if(bruteMove_script.toggleSelected == true)
+        // {
+        //     cameraFollow_script.togglePlayerFollow(Brute);
+        // }
+        // else if(pumpMove_script.toggleSelected == true)
+        // {
+        //     cameraFollow_script.togglePlayerFollow(Pump);
+        // }
+        // else if(satMove_script.toggleSelected == true)
+        // {
+        //     cameraFollow_script.togglePlayerFollow(Sat);
+        // }
     }
 
     public void deselectMove()
@@ -188,36 +208,50 @@ public class ToggleSelectedPlayer : MonoBehaviour
     public void updatePlayerCount()
     {
         playerCount = 0;
+        //note for how to refactor. 
+        for(int i = 0; i<=5; i++)
+        {
+            if(players[i].toggleSelected)
+            {
+                playerCount ++;
+            }
+
+        }
+
+
+        
         //gear isLocal
-        if(gearMove_script.toggleSelected)
-        {
-            playerCount ++;
-        }          
-        //luz isLocal
-        if(luzMove_script.toggleSelected)
-        {
-            playerCount ++;
-        }
-        //brute isLocal
-        if(bruteMove_script.toggleSelected)
-        {
-            playerCount ++;
-        }
-        //pump isLocal
-        if(pumpMove_script.toggleSelected)
-        {
-           playerCount ++;
-        }
-        //sat isLocal
-        if(satMove_script.toggleSelected)
-        {
-            playerCount ++;
-        }
+        // if(gearMove_script.toggleSelected)
+        // {
+        //     playerCount ++;
+        // }          
+        // //luz isLocal
+        // if(luzMove_script.toggleSelected)
+        // {
+        //     playerCount ++;
+        // }
+        // //brute isLocal
+        // if(bruteMove_script.toggleSelected)
+        // {
+        //     playerCount ++;
+        // }
+        // //pump isLocal
+        // if(pumpMove_script.toggleSelected)
+        // {
+        //    playerCount ++;
+        // }
+        // //sat isLocal
+        // if(satMove_script.toggleSelected)
+        // {
+        //     playerCount ++;
+        // }
         
     }
 
     public void Toggle()
     {
+
+        //note for how to refactor toggle selected. islocalplayer is an int instead of a bool. the int corresponds to the array. When you toggle, it just adds one to the isLocalPlayer int then goes to script_array[isLocalplayer int] and sets isLocalplayer to true.. you also have an array of toggle selected (selected by other players) ints eg. [2,4, 5] after you add one to you isLocalPlayer int it checks if your number matches any in the array, if they do it adds another and checks again until it finds one that doesnt match.
 
         {
             //gear isLocal
