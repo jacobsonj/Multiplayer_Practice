@@ -25,6 +25,10 @@ public class ToggleSelectedPlayer : MonoBehaviour
     public GameObject[] gameObjects;
     public Player[] players;
 
+    public int isLocalPlayerInt;
+
+    public int frameCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,13 +37,14 @@ public class ToggleSelectedPlayer : MonoBehaviour
         cameraFollow_script = Main_Camera.GetComponent<CamerFollow>();
         gameObjects = new GameObject[] {Gears, Luz, Brute, Pump, Sat};
         players = new Player[] {gearMove_script, luzMove_script, bruteMove_script, pumpMove_script, satMove_script};
+        setSelected(isLocalPlayerInt);
         selectCameraFollow();
-        // we need something in the start that goes and gets the states from the server and updates the player states so that new comers are jumping into the flow rather than forcing everyone to get on their flow.
     }
 
     // Update is called once per frame
     void Update()
     {
+        frameCount ++;
         if (Input.GetKeyDown("t"))
         {
             if(playerCount >= 5)
@@ -47,6 +52,11 @@ public class ToggleSelectedPlayer : MonoBehaviour
                 return;
             }
             Toggle();
+        }
+
+        if(frameCount%20 == 0 )
+        {
+            updatePlayerCount();
         }
     }
 
@@ -60,10 +70,7 @@ public class ToggleSelectedPlayer : MonoBehaviour
     }
 
     public void selectCameraFollow()
-    {
-
-        
-        
+    { 
         for (int i = 0; i < players.Length; i++) 
         {
             var p = players[i];
@@ -72,27 +79,6 @@ public class ToggleSelectedPlayer : MonoBehaviour
                 cameraFollow_script.togglePlayerFollow(gameObjects[i]);
             }
         }
-
-        // if(gearMove_script.toggleSelected == true)
-        // {
-        //     cameraFollow_script.togglePlayerFollow(Gears);   
-        // }
-        // else if(luzMove_script.toggleSelected == true)
-        // {
-        //     cameraFollow_script.togglePlayerFollow(Luz);
-        // }
-        // else if(bruteMove_script.toggleSelected == true)
-        // {
-        //     cameraFollow_script.togglePlayerFollow(Brute);
-        // }
-        // else if(pumpMove_script.toggleSelected == true)
-        // {
-        //     cameraFollow_script.togglePlayerFollow(Pump);
-        // }
-        // else if(satMove_script.toggleSelected == true)
-        // {
-        //     cameraFollow_script.togglePlayerFollow(Sat);
-        // }
     }
 
     public void deselectMove()
@@ -114,97 +100,6 @@ public class ToggleSelectedPlayer : MonoBehaviour
         satMove_script.sendState();
     }
 
-    public void selectGear(bool isSelected)
-    {
-        if(gearMove_script.toggleSelected)
-        {
-            satMove_script.isLocalPlayer = isSelected;
-            satMove_script.toggleSelected = isSelected;
-            selectLuz(gearMove_script.toggleSelected);
-        }
-        else
-        {
-            deselectMove();
-            satMove_script.toggleSelected = isSelected;
-            gearMove_script.toggleSelected = true;
-            gearMove_script.isLocalPlayer = true;
-            cameraFollow_script.togglePlayerFollow(Gears);
-        }
-        sendAllState();   
-    }
-    public void selectLuz(bool isSelected)
-    {
-        if(luzMove_script.toggleSelected)
-        {
-            gearMove_script.isLocalPlayer = isSelected;
-            gearMove_script.toggleSelected = isSelected;
-            selectBrute(luzMove_script.toggleSelected);
-        }
-        else
-        {
-            deselectMove();
-            gearMove_script.toggleSelected = isSelected;
-            luzMove_script.toggleSelected = true;
-            luzMove_script.isLocalPlayer = true;
-            cameraFollow_script.togglePlayerFollow(Luz);
-        }
-        sendAllState(); 
-    }
-    public void selectBrute(bool isSelected)
-    {
-        if(bruteMove_script.toggleSelected)
-        {
-            luzMove_script.isLocalPlayer = isSelected;
-            luzMove_script.toggleSelected = isSelected;
-            selectPump(bruteMove_script.toggleSelected);
-        }
-        else
-        {
-            deselectMove();
-            luzMove_script.toggleSelected = isSelected;
-            bruteMove_script.toggleSelected = true;
-            bruteMove_script.isLocalPlayer = true;
-            cameraFollow_script.togglePlayerFollow(Brute);
-        }
-        sendAllState(); 
-    }
-    public void selectPump(bool isSelected)
-    {
-        if(pumpMove_script.toggleSelected)
-        {
-            bruteMove_script.isLocalPlayer = isSelected;
-            bruteMove_script.toggleSelected = isSelected;
-            selectSat(pumpMove_script.toggleSelected);
-        }
-        else
-        {
-            deselectMove();
-            bruteMove_script.toggleSelected = isSelected;
-            pumpMove_script.toggleSelected = true;
-            pumpMove_script.isLocalPlayer = true;
-            cameraFollow_script.togglePlayerFollow(Pump);
-        }
-        sendAllState(); 
-    }
-    public void selectSat(bool isSelected)
-    {
-        if(satMove_script.toggleSelected)
-        {
-            pumpMove_script.isLocalPlayer = isSelected;
-            pumpMove_script.toggleSelected = isSelected;
-            selectGear(satMove_script.toggleSelected);
-        }
-        else
-        {
-            deselectMove();
-            pumpMove_script.toggleSelected = isSelected;
-            satMove_script.toggleSelected = true;
-            satMove_script.isLocalPlayer = true;
-            cameraFollow_script.togglePlayerFollow(Sat);
-        }
-        sendAllState(); 
-    }
-
     public void updatePlayerCount()
     {
         playerCount = 0;
@@ -215,72 +110,44 @@ public class ToggleSelectedPlayer : MonoBehaviour
             {
                 playerCount ++;
             }
-
         }
-
-
-        
-        //gear isLocal
-        // if(gearMove_script.toggleSelected)
-        // {
-        //     playerCount ++;
-        // }          
-        // //luz isLocal
-        // if(luzMove_script.toggleSelected)
-        // {
-        //     playerCount ++;
-        // }
-        // //brute isLocal
-        // if(bruteMove_script.toggleSelected)
-        // {
-        //     playerCount ++;
-        // }
-        // //pump isLocal
-        // if(pumpMove_script.toggleSelected)
-        // {
-        //    playerCount ++;
-        // }
-        // //sat isLocal
-        // if(satMove_script.toggleSelected)
-        // {
-        //     playerCount ++;
-        // }
-        
     }
 
     public void Toggle()
     {
+        players[isLocalPlayerInt].toggleSelected = false;
+        checkAndSelect();   
+    }
+    
+    public void setSelected(int newLocalPlayer)
+    {
+        deselectMove();
+        print("loook heeere" + newLocalPlayer);
+        players[newLocalPlayer].isLocalPlayer = true;
+        players[newLocalPlayer].toggleSelected = true;
+        print(players[newLocalPlayer].toggleSelected);
+        cameraFollow_script.togglePlayerFollow(gameObjects[newLocalPlayer]);
+        sendAllState();
+    }
 
-        //note for how to refactor toggle selected. islocalplayer is an int instead of a bool. the int corresponds to the array. When you toggle, it just adds one to the isLocalPlayer int then goes to script_array[isLocalplayer int] and sets isLocalplayer to true.. you also have an array of toggle selected (selected by other players) ints eg. [2,4, 5] after you add one to you isLocalPlayer int it checks if your number matches any in the array, if they do it adds another and checks again until it finds one that doesnt match.
-
+    public void checkAndSelect()
+    {
+        if(isLocalPlayerInt < players.Length - 1)
         {
-            //gear isLocal
-            if(gearMove_script.isLocalPlayer == true)
-            {
-                selectLuz(false);
-            }          
-            //luz isLocal
-            else if(luzMove_script.isLocalPlayer == true)
-            {
-                selectBrute(false);
-            }
-            //brute isLocal
-            else if(bruteMove_script.isLocalPlayer == true)
-            {
-                selectPump(false);
-            }
-            //pump isLocal
-            else if(pumpMove_script.isLocalPlayer == true)
-            {
-                selectSat(false);
-                // cameraFollow_script.togglePlayerFollow(Sat);
-            }
-            //sat isLocal
-            else if(satMove_script.isLocalPlayer == true)
-            {
-                selectGear(false);
-            }
-            updatePlayerCount();
+            isLocalPlayerInt ++;  
+        }
+        else
+        {
+            isLocalPlayerInt = 0;
+        }
+
+        if(!players[isLocalPlayerInt].toggleSelected)
+        {
+            setSelected(isLocalPlayerInt);
+        }
+        else
+        {
+            checkAndSelect();
         }
     }
 }

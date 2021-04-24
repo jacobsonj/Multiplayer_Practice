@@ -504,6 +504,8 @@ MonoBehaviour:
   playerCount: 0
   gameObjects: []
   players: []
+  isLocalPlayerInt: 0
+  frameCount: 0
 --- !u!4 &828816995
 Transform:
   m_ObjectHideFlags: 0
@@ -1143,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 3846115058874074036, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.09419981
+      value: 0.094199814
       objectReference: {fileID: 0}
     - target: {fileID: 3846115058874074036, guid: f2a49ec875de843a2a7f007c03956d4b,
         type: 3}
@@ -1202,17 +1204,17 @@ PrefabInstance:
     - target: {fileID: 2647431935478179399, guid: 131f9d4b413474090abd90c54456dd56,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00000005960465
+      value: 0.000000059604666
       objectReference: {fileID: 0}
     - target: {fileID: 2647431935478179399, guid: 131f9d4b413474090abd90c54456dd56,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.64659446
+      value: 0.6465945
       objectReference: {fileID: 0}
     - target: {fileID: 2647431935478179399, guid: 131f9d4b413474090abd90c54456dd56,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000001192093
+      value: 0.00000011920933
       objectReference: {fileID: 0}
     - target: {fileID: 2647431935478179399, guid: 131f9d4b413474090abd90c54456dd56,
         type: 3}
@@ -1276,22 +1278,22 @@ PrefabInstance:
     - target: {fileID: 4970266565021989582, guid: 0bf83fdb9b4224fcc9faa052696b61b2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00000017939611
+      value: 0.0000001793961
       objectReference: {fileID: 0}
     - target: {fileID: 4970266565021989582, guid: 0bf83fdb9b4224fcc9faa052696b61b2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.99997425
+      value: 0.9999742
       objectReference: {fileID: 0}
     - target: {fileID: 4970266565021989582, guid: 0bf83fdb9b4224fcc9faa052696b61b2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000010430817
+      value: 0.000000104308164
       objectReference: {fileID: 0}
     - target: {fileID: 4970266565021989582, guid: 0bf83fdb9b4224fcc9faa052696b61b2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0071841725
+      value: -0.007184172
       objectReference: {fileID: 0}
     - target: {fileID: 4970266565021989582, guid: 0bf83fdb9b4224fcc9faa052696b61b2,
         type: 3}
@@ -1459,7 +1461,7 @@ PrefabInstance:
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0006320007
+      value: 0.0006320006
       objectReference: {fileID: 0}
     - target: {fileID: 8878351341193377902, guid: 843eeb26f218c4e5fa2ec09ed9538867,
         type: 3}

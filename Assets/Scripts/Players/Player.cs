@@ -77,8 +77,6 @@ public class Player : MonoBehaviour
     async void sendPos()
     {
         var currentPos = transform.position.Round(2);
-        // var currentRot = transform.rotation.Round(2)
-        // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var robot = new RobotPosition();
         robot.name = name;
@@ -96,8 +94,6 @@ public class Player : MonoBehaviour
     
     public async void sendState()
     {
-        
-        // print(name);
         time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var robot = new RobotState();
         robot.name = name;
@@ -116,21 +112,6 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        // print("LOOOOOOOOK HEEEEEEEEERE");
-       // if(time == 0)
-        // {
-        //     time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        // }
-        // if(time == new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds())
-        // {
-        //     return;
-        // }
-        // print(time);
-        
-        // if(!isBeingCarried)
-        // {
-            // sendPos();
-        // } 
     }
 
     
