@@ -8,18 +8,21 @@ using System.Text;
 public class UpdateMapState : MonoBehaviour
 {
     private static readonly HttpClient client = new HttpClient();
-    public GameObject Gears_IDI;
-    public GameObject Luz_IDI;
 
-    public Gears_IDI GearsIDI_script;
-    public Luz_IDI LuzIDI_script;
+    public GameObject[] items;
+    public List<IDI_Base> item_scripts;
 
     public int frameCount = 0;
     // Start is called before the first frame update
     void Start()
     {
-        GearsIDI_script = Gears_IDI.GetComponent<Gears_IDI>();
-        LuzIDI_script = Luz_IDI.GetComponent<Luz_IDI>();
+        items = GameObject.FindGameObjectsWithTag("IDI");
+        print(items.Length-1);
+        // List<IDI_Base> item_scripts = new List<IDI_Base>();
+        for(int i = 0; i<items.Length; i++)
+        {
+            item_scripts.Add(items[i].GetComponent<IDI_Base>());
+        }
     }
 
     // Update is called once per frame
@@ -46,7 +49,12 @@ public class UpdateMapState : MonoBehaviour
                 return state;
             }
         }
-        return new MapState();
+        var emptyMap = new MapState();
+        emptyMap.name = "empty";
+        emptyMap.itemState = new ItemState();
+        emptyMap.itemState.PlayerIDI_Active = false;
+        return emptyMap;
+        // return false;
     }
 
     async void updateItemStates()
@@ -58,13 +66,10 @@ public class UpdateMapState : MonoBehaviour
 
         var positionResponseString = await positionResponse.Content.ReadAsStringAsync();
         var response = JsonUtility.FromJson<MapStateResponse>(positionResponseString);
-        
-        GearsIDI_script.active = getMapState(response.mapStates, "Gears_IDI").itemState.PlayerIDI_Active;
-        print(GearsIDI_script.active);
-        // GearsIDI_script.active  = map.Gears_IDI.itemState.PlayerIDI_Active;
-
-        LuzIDI_script.active  = getMapState(response.mapStates, "Luz_IDI").itemState.PlayerIDI_Active;
-        
+        foreach(IDI_Base script in item_scripts)
+        {
+            script.active = getMapState(response.mapStates, script.name).itemState.PlayerIDI_Active;
+        }
     }
 }
 
