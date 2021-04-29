@@ -104,7 +104,7 @@ public class ToggleSelectedPlayer : MonoBehaviour
     {
         playerCount = 0;
         //note for how to refactor. 
-        for(int i = 0; i<=5; i++)
+        for(int i = 0; i<5; i++)
         {
             if(players[i].toggleSelected)
             {
@@ -122,7 +122,6 @@ public class ToggleSelectedPlayer : MonoBehaviour
     public void setSelected(int newLocalPlayer)
     {
         deselectMove();
-        print("loook heeere" + newLocalPlayer);
         players[newLocalPlayer].isLocalPlayer = true;
         players[newLocalPlayer].toggleSelected = true;
         print(players[newLocalPlayer].toggleSelected);

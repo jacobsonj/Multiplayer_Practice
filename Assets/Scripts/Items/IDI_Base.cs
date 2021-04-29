@@ -30,7 +30,7 @@ public class IDI_Base : MonoBehaviour
         map.name = name;
         print(map.name);
         map.itemState = new ItemState();
-        map.itemState.GearsIDI_Active = active;
+        map.itemState.PlayerIDI_Active = active;
         
     
         string json = JsonUtility.ToJson(map);
@@ -53,5 +53,5 @@ public class MapState
 [Serializable]
 public class ItemState
 {
-    public bool GearsIDI_Active;
+    public bool PlayerIDI_Active;
 }
