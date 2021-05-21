@@ -165,20 +165,18 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator ExecuteAfterTime(float time)
-        {
-
-            var rb = GetComponent<Rigidbody>();
-            isBeingCarried = !isBeingCarried;
-            sendPos();
-            rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
-            isLocalPlayer = true;
-            sendState();
-            yield return new WaitForSeconds(time);
-            isLocalPlayer = false;
-            rb.constraints = RigidbodyConstraints.None;
-            sendState();
-     
-        }
+    {
+        var rb = GetComponent<Rigidbody>();
+        isBeingCarried = !isBeingCarried;
+        sendPos();
+        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        isLocalPlayer = true;
+        sendState();
+        yield return new WaitForSeconds(time);
+        isLocalPlayer = false;
+        rb.constraints = RigidbodyConstraints.None;
+        sendState();
+    }
 }
 
 [Serializable]
